@@ -11,10 +11,20 @@ public_users.post("/register", (req,res) => {
 });
 
 // Get the book list available in the shop
-public_users.get('/',function (req, res) {
-  //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
+public_users.get('/', function (req, res) {
+  const bookList = Object.values(books);
+  let formattedOutput = "";
+
+  bookList.forEach(book => {
+    formattedOutput += `{\n  "Title": "${book.title}",<br>  "Author": "${book.author}" <br> "Reviews": ${JSON.stringify(book.reviews)}\n},<br>`;
+  });
+
+  // Remove the trailing comma and HTML line breaks from the last book
+  formattedOutput = formattedOutput.slice(0, -5);
+
+  return res.status(300).send(`[<br>${formattedOutput}<br>]`);
 });
+
 
 // Get book details based on ISBN
 public_users.get('/isbn/:isbn',function (req, res) {
